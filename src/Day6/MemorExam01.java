@@ -7,10 +7,8 @@ abstract class Memory {
 	Scanner sc = new Scanner(System.in);
 	int arr[] = new int[5];
 
-	public int push(int a) {
-		System.out.println("넣을 숫자를 입력해주세요");
+	public void push(int a) { //인덱스번호 
 		int num = sc.nextInt();
-		return num;
 
 	}
 
@@ -21,18 +19,14 @@ class MyStack extends Memory {
 
 	Scanner sc = new Scanner(System.in);
 	public int pop() {
-		System.out.println("Stack에서 출력할 숫자를 입력해주세요");
-		int num = sc.nextInt();
-		return num;
+		return arr[--top];
 
 	}
 }
 
-class MyQuene extends Memory {
+class MyQueue extends Memory {
 	
-	Scanner sc = new Scanner(System.in);
 	public int pop() {
-		System.out.println("Quene에서 출력할 숫자를 입력해주세요");
 		int num = sc.nextInt();
 		return num;
 
@@ -44,7 +38,7 @@ public class MemorExam01 {
 	public static void main(String[] args) {
 		
 		MyStack stack = new MyStack();
-		MyQuene quene = new MyQuene();
+		MyQueue queue = new MyQueue();
 
 		Scanner sc = new Scanner(System.in);
 		
@@ -60,9 +54,11 @@ public class MemorExam01 {
 					int n = sc.nextInt();
 					
 					if(n == 1) {
+						System.out.println("넣을 숫자를 입력하세요");
 						stack.push(sc.nextInt());
 						
 					}else if(n == 2) {
+						System.out.println("출력할 숫자를 입력하세요");
 						System.out.println(stack.pop());						
 					}else break;
 				}
@@ -74,10 +70,10 @@ public class MemorExam01 {
 					int n = sc.nextInt();
 					
 					if(n == 1) {
-						quene.push(sc.nextInt());
+						queue.push(sc.nextInt());
 						
 					}else if(n == 2) {
-						System.out.println(quene.pop());
+						System.out.println(queue.pop());
 					}else break;
 				}
 			}else System.exit(0);
