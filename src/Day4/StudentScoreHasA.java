@@ -65,9 +65,6 @@ public class StudentScoreHasA {
 	public void setEng(int eng) {
 		this.eng.setSubject(eng);
 	}
-	
-	
-
 
 	public int getTotal() {
 		return total = eng.getSubject()+kor.getSubject()+mat.getSubject();

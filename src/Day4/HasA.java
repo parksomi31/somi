@@ -4,7 +4,7 @@ package Day4;  // 객체를 안에서 만들어서 실행시키느냐
 
 class A {
 	
-	//필드
+	//필드 = 인스턴스 변수
 	private int a;
 
 	//생성자
@@ -36,9 +36,11 @@ public class HasA {
 		name = "";
 		age = new A();
 	}
-	public void setName(String name) { this.name = name;
+	public void setName(String name) { 
+		this.name = name;
 	}
-	public void setAge(int age) { this.age.setA(age) ;  //this.age = age;
+	public void setAge(int age) { 
+		this.age.setA(age) ;  //this.age = age;
 		                          //this.age.a = age;   > a는 A클래스에서 private잖아 그러니까 직접접근이 안되고 setA 통해서 가야지
 	}
 	public String getName() { return name;
