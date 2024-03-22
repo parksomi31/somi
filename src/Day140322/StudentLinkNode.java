@@ -13,11 +13,8 @@ public class StudentLinkNode {
 
 	// 메인
 	public static void main(String[] args) {
-//		head = cur = newNode = new StudentScoreHasA(); // LinkNode의 객체를 참조할 수 있는 변수를 3개 선언 (초기화)
-//		newNode.next = null; // 뉴노드의 next를 null로 초기화
 
 		System.out.println("학생성적관리 프로그램입니다.");
-		int stuNum = 1; // 학생성적 입력을 첫번째로 받는 지 아닌 지를 구분하기 위한 변수 선언
 
 		do {
 			Scanner sc = new Scanner(System.in);
@@ -31,32 +28,24 @@ public class StudentLinkNode {
 				if (head == null) {
 					head = newNode; // 첫 번째 학생의 노드를 head로 설정
 					cur = newNode;
-
-				}
-
-				else {
-
+				} else {
 					cur = head;
 					while (cur.next != null) {
 						cur = cur.next;
 					}
-
-					cur.next = newNode;
+						cur.next = newNode;
 				}
-
 				// 정보입력받기
 				System.out.println("이름: ");
 				newNode.setName(sc.next());
-				System.out.println("국어점수: ");
+				System.out.println("국어점수"
+						+ ": ");
 				newNode.setKor(sc.nextInt());
 				System.out.println("수학점수: ");
 				newNode.setMat(sc.nextInt());
 				System.out.println("영어점수: ");
 				newNode.setEng(sc.nextInt());
-
-				stuNum++;
-				System.out.println("1: " + newNode.getName());
-				System.out.println("2: " + head.getName());
+				
 				break;
 
 			// 학생성적수정
