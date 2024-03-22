@@ -52,48 +52,49 @@ public  class AdapterExam extends Frame implements ActionListener {
 			b1.addActionListener(this); 
 			b2.addActionListener(this);
 		
-			tf.addKeyListener(new KeyEventHandler(tf, ta));
+			tf.addKeyListener(new KeyAdapter() {
+		        public void keyTyped(KeyEvent e) {
+		            if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+		                ta.append(tf.getText() + "\n");
+		                tf.setText("");
+		            }
+		        }
+		    });
 
-			addWindowListener(new WindowEventHandler());
+			addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					System.exit(0);
+				}
+				} );
 		}
 		
-		public void actionPerformed(ActionEvent e){
-			String str=e.getActionCommand();
-			if(str.equals("Clear")){
-				ta.setText("");
-				tf.setText("");
-				tf.requestFocus(); 
-			}
-			else if(str.equals("Exit")){
-				System.exit(0);
-			}
-		}
+		public void actionPerformed(ActionEvent e) {
+	        String str = e.getActionCommand();
+	        if (str.equals("Clear")) {
+	            ta.setText("");
+	            tf.setText("");
+	            tf.requestFocus();
+	        } else if (str.equals("Exit")) {
+	            System.exit(0);
+	        }
+	    }
 
-		public static void main(String[] args){
-			new AdapterExam();
-		}
-		class KeyEventHandler extends KeyAdapter{
-			TextField tf;
-			TextArea ta;
+	    public static void main(String[] args) {
+	        new AdapterExam();
+	    }
+}
 
-			public KeyEventHandler(TextField tf, TextArea ta){
-				this.tf=tf;
-				this.ta=ta;
-			}
-
-			public void keyTyped(KeyEvent e){
-				if(e.getKeyChar() == KeyEvent.VK_ENTER){
-					ta.append(tf.getText()+"\n");
-					tf.setText("");
-				}
-			}	
-		}
-	}
-
-	
-
-	class WindowEventHandler extends WindowAdapter{
-		public void windowClosing(WindowEvent e){
-			System.exit(0);
-		}
-	}
+//	    class KeyEventHandler extends KeyAdapter {
+//	        public void keyTyped(KeyEvent e) {
+//	            if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+//	                ta.append(tf.getText() + "\n");
+//	                tf.setText("");
+//	            }
+//	        }
+//	    }
+//	}
+//	class WindowEventHandler extends WindowAdapter{
+//		public void windowClosing(WindowEvent e){
+//			System.exit(0);
+//		}
+//	}
