@@ -8,11 +8,10 @@ public class AllStudentFinal {
 	static StudentScoreHasA cur;
 	static StudentScoreHasA del;
 	static StudentScoreHasA newNode;
-	static Scanner sc = new Scanner(System.in);
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		boolean yn = true;
+		boolean yn = true; // 반복문 종료해주기 위해서 변수선언
 
 		System.out.println("학생성적 관리 프로그램입니다.");
 		System.out.println("======================");
@@ -42,29 +41,10 @@ public class AllStudentFinal {
 		}
 	}
 
+	// 점수입력함수
 	public static void inputScore() {
+		Scanner sc = new Scanner(System.in);
 		newNode = new StudentScoreHasA();
-		if (head == null) { // 첫번째로 데이터를 입력하는 경우
-			head = newNode; // 첫 번째 학생의 노드를 head로 설정
-			cur = newNode;
-
-		} else if (head.next == null) { // 두번째로 데이터를 입력하는 경우
-			while (cur.next != null) { // 커서의 다음 노드가 비어있지 않을때까지 반복해서 찾음
-				cur = cur.next; // 그 커서를 그 다음노드로 연결
-			}
-			cur.next = newNode; // 그리고 커서의 넥스트에다가 새로만든 노드를 연결
-		} else {// 노드가 이미 여러개면 성적을 비교해서 넣어야함
-			StudentScoreHasA pre = newNode;
-			cur = head; // 커서를 헤드위치로 초기화
-			pre = head;
-			while (cur.next != null || cur.getAvg() >= newNode.getAvg()) { // 커서의 넥스트가 null이 아닐때까지만 찾는데, 그러면 두번째에 입력할 때
-																			// 안돌아갈거니까 두번째 노드에 추가하는 건 따로빼줌
-				cur.next = newNode;
-			}
-			newNode.next = cur.next; // cur의 다음 노드를 새로운 노드의 다음 노드로 설정
-			cur.next = newNode; // cur의 다음 노드를 새로운 노드로 설정
-		}
-
 		// 정보입력받기
 		System.out.println("이름: ");
 		newNode.setName(sc.next());
@@ -74,12 +54,36 @@ public class AllStudentFinal {
 		newNode.setMat(sc.nextInt());
 		System.out.println("영어점수: ");
 		newNode.setEng(sc.nextInt());
+		if (head == null) { // 첫번째로 데이터를 입력하는 경우
+			head = newNode; // 첫 번째 학생의 노드를 head로 설정
+			cur = newNode; // 커서도 뉴도드로 초기화
+		} else {
+			StudentScoreHasA pre = null;
+			cur = head; // 커서를 헤드로 초기화
+			// 새로운 노드의 평균 점수가 현재 노드의 평균 점수보다 높을 때까지 반복
+			while (cur != null && cur.getAvg() >= newNode.getAvg()) { // 부등호의 방향을 변경
+				pre = cur;
+				cur = cur.next;
+			}
+
+			// 이 부분에서 새로운 노드를 중간에 삽입
+			if (cur == null) { // 새로운 노드가 맨 앞에 삽입되어야 하는 경우
+				pre.next = newNode; // 새로운 노드를 head로 연결
+			} else if (head.getAvg() < newNode.getAvg()) { // cur == head
+				newNode.next = head;
+				head = newNode;
+			} else {
+				// 중간에 삽입되는 경우
+				newNode.next = cur; // 새로운 노드의 next를 현재 노드(cur)로 지정
+				pre.next = newNode; // 이전 노드(pre)의 next를 새로운 노드로 지정하여 새로운 노드를 삽입
+			}
+		}
 
 	}
 
 	// 정보수정함수
 	public static void modiSocre() {
-
+		Scanner sc = new Scanner(System.in);
 		cur = head; // 커서 위치를 head로 초기화
 
 		System.out.println("어떤 학생의 성적을 수정하시겠어요?");
@@ -91,35 +95,69 @@ public class AllStudentFinal {
 		System.out.println("변경할 점수를 입력해주세요");
 		int score = sc.nextInt();
 
+		StudentScoreHasA modi = null;
+
 		while (cur != null) { // 커서가 null이 아닐 때까지 반복할건데
 			if (cur.getName().equals(name)) { // 입력받은 학생 이름과 일치하는 경우
-				switch (subject) { // 사용자에게 입력받은 변수를 통해서
-				case 1:
-					cur.setKor(score); // 국어점수 수정
-					break;
-				case 2:
-					cur.setMat(score); // 수학점수 수정
-					break;
-				case 3:
-					cur.setEng(score); // 영어점수 수정
-					break;
-				default: // 번호를 잘못 입력한 경우
-					System.out.println("번호를 확인하고 다시 입력해주세요");
-					return; // 메서드 호출한 곳으로 돌아감
-				}
-				System.out.println(name + " 학생의 성적이 수정되었습니다.");
-				return; // 메서드 호출한 곳으로 돌아감
-			} else {
-				cur = cur.next; // 다음 노드로 이동
+				modi = cur; // modi변수에다가 해당 학생의 정보를 저장
+				break; // 찾았으니까 멈춤
+			} else { // 못찾으면 찾을 때 까지 커서를 다음으로 넘기면서 찾음
+				cur = cur.next;
 			}
 		}
-		// 입력받은 학생 이름과 일치하는 학생이 없는 경우
-		System.out.println("해당 학생을 찾을 수 없습니다.");
+		if (modi != null) { // 수정할 학생을 찾은 경우
+			switch (subject) { // 사용자에게 입력받은 변수를 통해서
+			case 1:
+				modi.setKor(score); // 국어점수 수정
+				break;
+			case 2:
+				modi.setMat(score); // 수학점수 수정
+				break;
+			case 3:
+				modi.setEng(score); // 영어점수 수정
+				break;
+			default: // 번호를 잘못 입력한 경우
+				System.out.println("번호를 확인하고 다시 입력해주세요");
+				return; // 메서드 호출한 곳으로 돌아감
+			}
+			System.out.println(name + " 학생의 성적이 수정되었습니다.");
+
+			// 새로운 노드를 정렬하여 삽입
+			if (head == modi) { // 수정된 노드가 head인 경우
+				return; // 이미 맨 앞에 위치하고 있으므로 추가 작업 필요 없음
+			}
+
+			// 수정된 노드를 연결 리스트에서 제거
+			StudentScoreHasA pre = head;
+			while (pre.next != modi) { // 수정된 노드의 이전 노드를 찾음
+				pre = pre.next;
+			}
+			pre.next = modi.next; // 수정된 노드의 이전 노드의 다음을 수정된 노드의 다음으로 설정하여 제거
+
+			// 수정된 노드를 정렬하여 다시 삽입
+			cur = head;
+			pre = null;
+			while (cur != null && cur.getAvg() >= modi.getAvg()) { // 새로운 노드의 평균 점수가 현재 노드의 평균 점수보다 높을 때까지 반복
+				pre = cur; // pre에 현재 노드를 저장
+				cur = cur.next; // 다음 노드로 이동
+			}
+			
+			if (pre == null) { // 수정된 노드가 가장 작은 평균 점수를 가진 노드인 경우
+				modi.next = head; // 수정된 노드를 head로 설정하여 맨 앞에 삽입
+				head = modi; // head를 수정된 노드로 업데이트
+			} else { // 수정된 노드가 가장 작은 평균 점수를 가진 노드가 아닌 경우
+				modi.next = pre.next; // 수정된 노드의 다음을 pre의 다음으로 설정하여 삽입
+				pre.next = modi; // pre의 다음을 수정된 노드로 설정하여 삽입
+			}
+		} else {
+			System.out.println("해당 학생을 찾을 수 없습니다.");
+		}
 	}
 
 	// 정보삭제함수
 
 	public static void delScore() {
+		Scanner sc = new Scanner(System.in);
 		cur = head; // 커서위치를 헤드로 초기화
 
 		System.out.println("어떤 학생의 점수를 삭제하시겠어요?");
@@ -145,6 +183,7 @@ public class AllStudentFinal {
 
 	// 학생성적 조회함수
 	public static void printScore() {
+		Scanner sc = new Scanner(System.in);
 		cur = head; // 커서 위치를 head로 초기화
 		System.out.println("1. 전체학생 성적조회 2. 특정학생 성적조회");
 		int num = sc.nextInt(); // 사용자한테 입력받은 내용 저장할 변수
@@ -153,27 +192,23 @@ public class AllStudentFinal {
 		case 1: // 1번 누른경우에는
 			cur = head; // 커서 위치를 head로 초기화
 			while (cur != null) { // 커서가 null이 아닐때까지 계속 반복하면서 출력
-				System.out.println("이름: " + cur.getName());
-				System.out.println("평균" + (float) (cur.getKor()+cur.getMat()+ cur.getEng())/3);
-				System.out.println("국어: " + cur.getKor());
-				System.out.println("수학: " + cur.getMat());
-				System.out.println("영어: " + cur.getEng());
+				System.out.print("이름: " + cur.getName() + " " + "|" + "평균" + cur.getAvg() + " " + "|" + "국어: "
+						+ cur.getKor() + " " + "|" + "수학: " + cur.getMat() + " " + "|" + "영어: " + cur.getEng());
+				System.out.println();
 				cur = cur.next; // 다음 학생으로 이동
 			}
 			break;
 		case 2: // 2번 누른경우에는
 			System.out.println("어떤학생의 성적을 조회할까요?");
 			String nameSearch = sc.next();
-			boolean found = false; // 반복문을 멈춰줄 수 있도록 찾은 여부를 찾은 변수 선언
+			boolean found = true; // 반복문을 멈춰줄 수 있도록 찾은 여부를 찾은 변수 선언
 
 			while (cur != null) {
 				if (cur.getName().equals(nameSearch)) { // 커서가 있는 노드의 이름이 사용자가 입력한 이름과 일치하면 출력
-					System.out.println("이름: " + cur.getName());
-					System.out.println("평균" + (float) (cur.getKor()+cur.getMat()+ cur.getEng())/3);
-					System.out.println("국어: " + cur.getKor());
-					System.out.println("수학: " + cur.getMat());
-					System.out.println("영어: " + cur.getEng());
-					found = true; // 찾았으니까 true로 바꿔줘서 더 반복하지 않도록해줌
+					System.out.print("이름: " + cur.getName() + " " + "|" + "평균" + cur.getAvg() + " " + "|" + "국어: "
+							+ cur.getKor() + " " + "|" + "수학: " + cur.getMat() + " " + "|" + "영어: " + cur.getEng());
+					System.out.println();
+					found = false; // 찾았으니까 true로 바꿔줘서 더 반복하지 않도록해줌
 					break; // 탈출
 				}
 			}

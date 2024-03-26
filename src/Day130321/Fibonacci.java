@@ -1,4 +1,4 @@
-package Day130321;
+0package Day130321;
 
 import java.nio.file.spi.FileSystemProvider;
 import java.util.Scanner;
@@ -24,8 +24,6 @@ public class Fibonacci {
     	  b = temp + b;
       }
    }
-   
-
    static int answer(int num) {
 	      if (num != 0 && num <= 3) {
 	         return 1;

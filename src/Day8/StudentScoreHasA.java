@@ -67,12 +67,9 @@ public class StudentScoreHasA {
 	public int getTotal() {
 		return total = eng.getSubject()+kor.getSubject()+mat.getSubject();
 	}
-	
-
-	
 
 	public float getAvg() {
-		return avg = total/3.f;  //내꺼니까 객체가 필요없어서 바로 불러와서 쓰면됨
+		return avg = (float) total/3.f;  //내꺼니까 객체가 필요없어서 바로 불러와서 쓰면됨
 	}
 
 	public static void main(String []args) {
